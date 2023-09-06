@@ -1,50 +1,40 @@
 function findRoutes(routes) {
-    const arr = [];
-    const arrResult = [];
+    const countItems = {};
 
     for (let i = 0; i < routes.length; i++) {
-        let count = 0;
         for (let j = 0; j < routes[i].length; j++) {
-            if (!arr.includes(routes[i][j])) {
-                arr.push(routes[i][j]);
-            }
-
-            // if (routes[0][0] === routes[i][j]) {
-            //     arr.push(routes[i][j]);
-            // }
+            countItems[routes[i][j]] = countItems[routes[i][j]] ? countItems[routes[i][j]] + 1 : 1;
         }
-        // arr.push(routes[i].join(' '));
     }
 
+    const result = Object.keys(countItems).filter((item) => countItems[item] === 1);
+    result.pop();
 
-    for (let i = 0; i < arr.length; i++) {
-        for (let q = 0; q < routes.length; q++) {
-            for (let j = 0; j < routes[q].length; j++) {
-                if (arr[i] !== routes[q][j]) {
-                    // arrResult.push(routes[q][j]);
+    let q = 0;
+    function route(place) {
+        for (let i = 0; i < routes.length; i++) {
+            for (let j = 0; j < routes[i].length; j++) {
+                if (place === routes[i][j] && !result.includes(routes[i][1])) {
+                    result.push(routes[i][1]);
                 }
             }
         }
+        return;
     }
 
-    // const string = arr.join(' ');
-    // const array = string.split(' ');
+    do {
+        route(result[q]);
+        q += 1;
+    } while (q < routes.length);
 
-    return arr;
-    // return arrResult;
-    // return count;
+    return result.join(', ');
 }
 
 console.log(findRoutes([["MNL", "TAG"], ["CEB", "TAC"], ["TAG", "CEB"], ["TAC", "BOR"]]));
 // "MNL, TAG, CEB, TAC, BOR"
-// console.log(findRoutes([["UK", "GER"], ["GER", "BEL"], ["BEL", "CAN"]]));
+console.log(findRoutes([["UK", "GER"], ["GER", "BEL"], ["BEL", "CAN"]]));
 // "UK, GER, BEL, CAN"
-// console.log(findRoutes([["Chicago", "Winnipeg"], ["Halifax", "Montreal"], ["Montreal", "Toronto"], ["Toronto", "Chicago"], ["Winnipeg", "Seattle"]]));
-// a b c d e f g h i j k l m n o p q r s t u v w x y z
+console.log(findRoutes([["Chicago", "Winnipeg"], ["Halifax", "Montreal"], ["Montreal", "Toronto"], ["Toronto", "Chicago"], ["Winnipeg", "Seattle"]]));
 // "Halifax, Montreal, Toronto, Chicago, Winnipeg, Seattle"
-// console.log(findRoutes([["Calgary", "Fargo"], ["Spokane", "Toronto"], ["Winnipeg", "Montreal"], ["Toronto", "Calgary"], ["Fargo", "Winnipeg"]]));
+console.log(findRoutes([["Calgary", "Fargo"], ["Spokane", "Toronto"], ["Winnipeg", "Montreal"], ["Toronto", "Calgary"], ["Fargo", "Winnipeg"]]));
 // "Spokane, Toronto, Calgary, Fargo, Winnipeg, Montreal"
-// console.log(findRoutes());
-// console.log(findRoutes());
-// console.log(findRoutes());
-// console.log(findRoutes());
